@@ -1,0 +1,50 @@
+@import '~styles/utils/modules-entry.scss';
+
+$connector-size: 0.75rem;
+
+.myDiv {
+      text-align: center;
+  }
+
+.block {
+      display: block; /* the default for span */
+      padding : 5px;
+      border-radius: 5px;
+      background-color: rgb(237, 94, 69); 
+      text-decoration-color: white;
+      margin: 5px;
+      color: white;
+      box-shadow: 2px 2px #a8a7a7;
+      overflow:auto;
+}
+
+span.a {
+  display: inline; /* the default for span */
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+  border: 1px solid blue;  
+  background-color: yellow; 
+}
+.nobullets {
+  list-style-type: none; /* Remove bullets */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margins */
+  overflow: auto;
+}
+
+.navbar1 {
+  overflow: auto;
+  white-space: nowrap;
+  height: 200px;
+}
+
+.navbar2 {
+  list-style-type: none; /* Remove bullets */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margins */
+  overflow: auto;
+  overflow: auto;
+  white-space: nowrap;
+  height: 175px;
+}

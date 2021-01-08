@@ -1,6 +1,9 @@
 import * as React from 'react';
 import ModList from "./ModList"
 
+import classnames from 'classnames';
+import styles from './ModRacing.scss'
+
 export type Props = {
   TEST: 1
 };
@@ -20,7 +23,7 @@ export default class ModRacing extends React.PureComponent<Props, State> {
     
     this.state = {
       gameStarted: false,
-      destination: "",
+      destination: "Destination",
       gameWon: false,
       start_point: "MA1100"
     };
@@ -49,10 +52,16 @@ export default class ModRacing extends React.PureComponent<Props, State> {
   render() {
     // const { value, placeholder, isLoading } = this.props;
     return (
-      <div>
+      <div className={styles.myDiv}>
         {this.state.gameStarted || this.state.gameWon
           ? <ModList start_point={this.state.start_point} destination={this.state.destination} end_game={this.end_game} isGameActive={this.isGameActive} restart_game={this.start_game} /> 
-          : <button onClick={this.start_game} href="/modules/MA1100/">Start Game</button>}
+          : <button 
+                type="button"
+                className={classnames('btn btn-outline-primary btn-svg')}
+                onClick={this.start_game} ref="/modules/MA1100/"
+            >
+            Start Game
+            </button>}
       </div>
     );
   }

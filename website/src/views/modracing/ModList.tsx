@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import styles from './ModRacing.scss'
+import classnames from 'classnames';
 import { useHistory } from 'react-router-dom';
 
 function ModList(props) {
@@ -29,13 +31,24 @@ function ModList(props) {
   const showActiveGame = () => {
     return (
       <div>
+        <div>
         {modHistory.length} clicks:
-        <ul>
-          {modHistory.map(mod => <li>{mod}</li>)}
+        </div>
+        <div className={styles.navbar1} >
+        <ul className={styles.nobullets}>
+          {modHistory.map(mod => 
+          // <li className={styles.branch} >
+          //   <a className={styles.link}>{mod}</a></li>)}
+          <li className={styles.block}>{mod}</li> )}
+
         </ul>
+        </div>
+        
       </div>
     )
   }
+
+  
 
   const restartGame = () => {
     setGameWon(false);
@@ -48,17 +61,20 @@ function ModList(props) {
         <div>You won!</div>
         <div>Clicks used: {winPath.length}</div>
         <div>your path: </div>
-        <ul>
-          {winPath.map(mod => <li>{mod}</li>)}
+        <ul className={styles.navbar2}>
+          {winPath.map(mod => <li className={styles.block}>{mod}</li>)}
         </ul>
-        <button onClick={restartGame}>Play again</button>
+        <button 
+        type="button"
+        className={classnames('btn btn-outline-primary btn-svg')}
+        onClick={restartGame}>Play again</button>
       </>
     )
   }
   
   return (
     <div>
-      <strong>destination: {props.destination}</strong>
+      <strong>Destination: {props.destination}</strong>
       {!gameWon ? showActiveGame() : showWinGame()}
     </div>
   )
