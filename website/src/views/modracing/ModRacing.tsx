@@ -1,56 +1,60 @@
-import { useHistory } from 'react-router-dom';
+import * as React from 'react';
 import ModList from "./ModList"
 
-import { FC } from 'react';
-
 export type Props = {
-  TEST: 0
+  TEST: 1
 };
 
 type State = {
+  gameStarted: boolean,
+  destination: String,
+  start_point: String,
+  gameWon: boolean,
 };
 
-// export const SIDE_MENU_LABELS = {
-//   details: 'Details',
-//   prerequisites: 'Prerequisites',
-//   timetable: 'Timetable',
-//   reviews: 'Reviews',
-// };
-
-const ModRacing: FC<Props> = ({
-    props,
-    go,
-    here
-  }) => {
-    const history = useHistory();
-    let mods_ive_visited = [0];
-    history.listen((location, action) => {
-        console.log(`The current URL is ${location.pathname}${location.search}${location.hash}`)
-        console.log(`The last navigation action was ${action}`)
-        // mods_ive_visited.push(history.location.pathname);
-        if (action == "PUSH") {
-          mods_ive_visited = [...mods_ive_visited, history.location.pathname]
-        } else if (action == "POP") {
-          mods_ive_visited.pop()
-        } else {
-        }
- })
-
-    const logHistory = () => {
-        console.log("mods ive visited:")
-        console.log(mods_ive_visited)
-    }
+export default class ModRacing extends React.PureComponent<Props, State> {
+  searchElement = React.createRef<HTMLInputElement>();
   
+  constructor(props: Props) {
+    super(props);
+    
+    this.state = {
+      gameStarted: false,
+      destination: "",
+      gameWon: false,
+      start_point: "MA1100"
+    };
+  }
+
+  start_game = () => {
+    this.setState({gameStarted: true});
+    this.setState({destination: this.set_destination()})
+    this.setState({gameWon: false})
+  }
+  
+  end_game = () => {
+    this.setState({gameStarted: false})
+    this.setState({gameWon: true})
+  }
+
+  set_destination = () => {
+    return "CS1231S";
+  }
+
+  isGameActive = () => {
+    return this.state.gameStarted && !this.state.gameWon;
+  }
+
+
+  render() {
+    // const { value, placeholder, isLoading } = this.props;
     return (
-      <>
-        <div className="hello">HELLO WORLD</div>
-        <button onClick={logHistory}>HISTORY</button>
-        {/* <ModList mods_ive_visited={mods_ive_visited} /> */}
-        {mods_ive_visited.map(mod => (<ModList mod={mod} key={mod}/>))}
-        {/* {mods_ive_visited.map(mod => (<div key={mod}>mod</div>))} */}
-        {/* <ModList mod={mods_ive_visited}/> */}
-      </>
+      <div>
+        {this.state.gameStarted || this.state.gameWon
+          ? <ModList start_point={this.state.start_point} destination={this.state.destination} end_game={this.end_game} isGameActive={this.isGameActive} restart_game={this.start_game} /> 
+          : <button onClick={this.start_game} href="/modules/MA1100/">Start Game</button>}
+      </div>
     );
-  };
+  }
+}
   
-  export default ModRacing;
