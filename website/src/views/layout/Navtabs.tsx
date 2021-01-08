@@ -9,6 +9,7 @@ import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
+import ModRacing from 'views/modracing/ModRacing'
 import type { State } from 'types/state';
 
 import styles from './Navtabs.scss';
@@ -77,6 +78,9 @@ const Navtabs: FC = () => {
         <Heart />
         <span className={styles.title}>Whispers</span>
       </ExternalLink>
+      <div className={styles.divider} />
+      
+      <ModRacing />
     </nav>
   );
 };
