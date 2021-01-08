@@ -28,8 +28,13 @@ const ModRacing: FC<Props> = ({
         console.log(`The current URL is ${location.pathname}${location.search}${location.hash}`)
         console.log(`The last navigation action was ${action}`)
         // mods_ive_visited.push(history.location.pathname);
-        mods_ive_visited = [...mods_ive_visited, history.location.pathname]
-    })
+        if (action == "PUSH") {
+          mods_ive_visited = [...mods_ive_visited, history.location.pathname]
+        } else if (action == "POP") {
+          mods_ive_visited.pop()
+        } else {
+        }
+ })
 
     const logHistory = () => {
         console.log("mods ive visited:")
