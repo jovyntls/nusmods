@@ -1,8 +1,10 @@
 import { useHistory } from 'react-router-dom';
+import ModList from "./ModList"
 
 import { FC } from 'react';
 
 export type Props = {
+  TEST: 0
 };
 
 type State = {
@@ -21,15 +23,16 @@ const ModRacing: FC<Props> = ({
     here
   }) => {
     const history = useHistory();
-    const mods_ive_visited = [];
+    let mods_ive_visited = [0];
     history.listen((location, action) => {
         console.log(`The current URL is ${location.pathname}${location.search}${location.hash}`)
         console.log(`The last navigation action was ${action}`)
-        mods_ive_visited.push(history.location.pathname);
+        // mods_ive_visited.push(history.location.pathname);
+        mods_ive_visited = [...mods_ive_visited, history.location.pathname]
     })
 
     const logHistory = () => {
-        console.log(history)
+        console.log("mods ive visited:")
         console.log(mods_ive_visited)
     }
   
@@ -37,7 +40,10 @@ const ModRacing: FC<Props> = ({
       <>
         <div className="hello">HELLO WORLD</div>
         <button onClick={logHistory}>HISTORY</button>
-        {mods_ive_visited.map(mod => (<div>mod</div>))}
+        {/* <ModList mods_ive_visited={mods_ive_visited} /> */}
+        {mods_ive_visited.map(mod => (<ModList mod={mod} key={mod}/>))}
+        {/* {mods_ive_visited.map(mod => (<div key={mod}>mod</div>))} */}
+        {/* <ModList mod={mods_ive_visited}/> */}
       </>
     );
   };
