@@ -33,10 +33,12 @@ function ModList(props) {
     console.log(props.route)
     return (
       <div>
+
         Target: <br />
         <strong>{props.destination}</strong> <br />
         <small>{props.destination_name}</small> <br />
         <div>
+
         {modHistory.length} clicks:
         </div>
         <div className={styles.navbar1} >
@@ -56,6 +58,7 @@ function ModList(props) {
   const showWinGame = () => {
     return (
       <>
+
         <div>You won!</div>
         <strong>{winPath[0]} -> {winPath[winPath.length - 1]}</strong>
         <div>in {winPath.length} clicks</div>
@@ -69,12 +72,14 @@ function ModList(props) {
           className={classnames('btn btn-outline-primary btn-svg')}
           onClick={restartGame}>Play again</button>
         </Link>
+
       </>
     )
   }
   
   return (
     <div>
+
       {!gameWon ? showActiveGame() : showWinGame()}
     </div>
   )
