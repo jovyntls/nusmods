@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import styles from './ModRacing.scss'
 import classnames from 'classnames';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 function ModList(props) {
   const [modHistory, setModHistory] = useState([]);
   const [winPath, setWinPath] = useState([]);
   const [gameWon, setGameWon] = useState(false);
+  const [modName, setModName] = useState("");
   const history = useHistory();
 
   history.listen((location, action) => {
@@ -29,26 +30,23 @@ function ModList(props) {
   }
 
   const showActiveGame = () => {
+    console.log(props.route)
     return (
       <div>
+        Target: <br />
+        <strong>{props.destination}</strong> <br />
+        <small>{props.destination_name}</small> <br />
         <div>
         {modHistory.length} clicks:
         </div>
         <div className={styles.navbar1} >
         <ul className={styles.nobullets}>
-          {modHistory.map(mod => 
-          // <li className={styles.branch} >
-          //   <a className={styles.link}>{mod}</a></li>)}
-          <li className={styles.block}>{mod}</li> )}
-
+          {modHistory.map(mod => <li className={styles.block}>{mod}</li> )}
         </ul>
         </div>
-        
       </div>
     )
   }
-
-  
 
   const restartGame = () => {
     setGameWon(false);
@@ -59,22 +57,24 @@ function ModList(props) {
     return (
       <>
         <div>You won!</div>
-        <div>Clicks used: {winPath.length}</div>
-        <div>your path: </div>
+        <strong>{winPath[0]} -> {winPath[winPath.length - 1]}</strong>
+        <div>in {winPath.length} clicks</div>
+        <sub>Your path: </sub>
         <ul className={styles.navbar2}>
           {winPath.map(mod => <li className={styles.block}>{mod}</li>)}
         </ul>
-        <button 
-        type="button"
-        className={classnames('btn btn-outline-primary btn-svg')}
-        onClick={restartGame}>Play again</button>
+        <Link to={"/modules/" + props.start_point + "/"}>
+          <button 
+          type="button"
+          className={classnames('btn btn-outline-primary btn-svg')}
+          onClick={restartGame}>Play again</button>
+        </Link>
       </>
     )
   }
   
   return (
     <div>
-      <strong>Destination: {props.destination}</strong>
       {!gameWon ? showActiveGame() : showWinGame()}
     </div>
   )

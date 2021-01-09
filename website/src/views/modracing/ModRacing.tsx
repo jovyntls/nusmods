@@ -7,40 +7,46 @@ import classnames from 'classnames';
 import styles from './ModRacing.scss'
 
 export type Props = {
-  TEST: 1
 };
 
 type State = {
   gameStarted: boolean,
   destination: String,
+  destination_name: String,
   start_point: String,
+  route: String,
   gameWon: boolean,
 };
 
 export default class ModRacing extends React.PureComponent<Props, State> {
-  searchElement = React.createRef<HTMLInputElement>();
-  
   constructor(props: Props) {
     super(props);
     
     this.state = {
       gameStarted: false,
-      destination: "Destination",
+      destination: "modCode",
+      destination_name: "Destination",
       gameWon: false,
-      start_point: "MA1100"
+      start_point: "MA1100",
+      route: "",
     };
   }
 
   componentDidMount() {
     axios.get('http://simpson-mods-api.herokuapp.com/path_random')
       .then((res) => {
-        this.setState({destination: res.data.mod2});
-        this.setState({start_point: res.data.mod1});
-        console.log(res.data)
-        return res.data
+        this.setState({destination: res.data[0].mod2});
+        this.setState({start_point: res.data[0].mod1});
+        this.setState({route: res.data[0].route})
+        return res.data[0]
       })
       .then((res) => {
-        console.log(this.state.start_point)
+        const modcode = res.mod2
+        axios.get(`https://api.nusmods.com/v2/2020-2021/modules/${modcode}.json`)
+          .then((res) => {
+            this.setState({destination_name: res.data.title})
+          })
+          .catch(err => console.log(err))
       })
       .catch((err) => console.log(err));
   }
@@ -53,10 +59,19 @@ export default class ModRacing extends React.PureComponent<Props, State> {
   end_game = () => {
     this.setState({gameStarted: false})
     this.setState({gameWon: true})
-  }
-
-  isGameActive = () => {
-    return this.state.gameStarted && !this.state.gameWon;
+    axios.get('http://simpson-mods-api.herokuapp.com/path_random')
+      .then((res) => {
+        this.setState({destination: res.data[0].mod2});
+        this.setState({start_point: res.data[0].mod1});
+        this.setState({route: res.data[0].route})
+        axios.get(`https://api.nusmods.com/v2/2020-2021/modules/${res.data[0].mod2}.json`)
+          .then((res) => {
+            this.setState({destination_name: res.data.title})
+          })
+          .catch(err => console.log(err))
+        return res.data
+      })
+      .catch((err) => console.log(err));
   }
 
 
@@ -64,16 +79,16 @@ export default class ModRacing extends React.PureComponent<Props, State> {
     return (
       <div className={styles.myDiv}>
         {this.state.gameStarted || this.state.gameWon
-          ? <ModList start_point={this.state.start_point} destination={this.state.destination} end_game={this.end_game} isGameActive={this.isGameActive} restart_game={this.start_game} /> 
+          ? <ModList start_point={this.state.start_point} destination={this.state.destination} destination_name={this.state.destination_name} route={this.state.route} end_game={this.end_game} restart_game={this.start_game} /> 
           : <Link to={"/modules/" + this.state.start_point + "/"}>
-            <button 
-              type="button"
-              className={classnames('btn btn-outline-primary btn-svg')}
-              onClick={this.start_game}
-            >
-              Start Game
-            </button>
-          </Link>
+              <button 
+                type="button"
+                className={classnames('btn btn-outline-primary btn-svg')}
+                onClick={this.start_game}
+              >
+                Start Game
+              </button>
+            </Link>
         }
       </div>
     );
