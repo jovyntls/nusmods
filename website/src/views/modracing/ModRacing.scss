@@ -16,6 +16,16 @@ $connector-size: 0.75rem;
       color: white;
       box-shadow: 2px 2px #a8a7a7;
       overflow:auto;
+      font-size: 0.7rem;
+
+      @include media-breakpoint-up(md) {
+        display: block;
+      }
+
+      @include media-breakpoint-up(xl) {
+        margin-left: 0.4rem;
+        font-size: 1rem;
+      }
 }
 
 span.a {
